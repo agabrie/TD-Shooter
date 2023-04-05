@@ -5,6 +5,7 @@ using UnityEngine;
 public class Actor : MoveableObject
 {
     // [SerializeField] public float stateUpdateLimit = 5;
+    [SerializeField] public ActorConfig config;
     [SerializeField] public State state = State.None;
     [SerializeField] internal Projectile projectilePrefab;
     List<Projectile> projectiles =  new List<Projectile>(); 
@@ -70,22 +71,22 @@ public class Actor : MoveableObject
             // this.setDirection(this.getRandomDirection());
             // state = State.Move;
             //Check for a match with the specified name on any GameObject that collides with your GameObject
-            if (collision.gameObject.layer == 6)
-            {
-                //If the GameObject's name matches the one you suggest, output this message in the console
-                Debug.Log("Collided with floor");
-            }
-            if (collision.gameObject.layer == 8)
-            {
-                //If the GameObject's name matches the one you suggest, output this message in the console
-                Debug.Log("Collided with player");
-                // setDirection(Directions.getRandomDirection(direction));
-                // state = State.Move;
-            }
+            // if (collision.gameObject.layer == 6)
+            // {
+            //     //If the GameObject's name matches the one you suggest, output this message in the console
+            //     Debug.Log("Collided with floor");
+            // }
+            // if (collision.gameObject.layer == 8)
+            // {
+            //     //If the GameObject's name matches the one you suggest, output this message in the console
+            //     Debug.Log("Collided with player");
+            //     // setDirection(Directions.getRandomDirection(direction));
+            //     // state = State.Move;
+            // }
             if (collision.gameObject.layer == 3)
             {
                 //If the GameObject's name matches the one you suggest, output this message in the console
-                Debug.Log("Collided with NPC");
+                // Debug.Log("Collided with NPC");
                 // setDirection(Directions.getRandomDirection(direction));
                 // state = State.Move;
             }

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Enemy : Actor
 {  
-    ActorConfig enemyConfig;
     // Start is called before the first frame update
     void Start(){
+        state = State.None;
         List<State> states = new List<State>{State.RandomShoot, State.Shoot, State.Chase};
-        enemyConfig = new ActorConfig(states, Directions.getDiagonalDirections());
+        config = new ActorConfig(states, Directions.getDiagonalDirections());
     }
     
     public void Update()
@@ -19,28 +19,28 @@ public class Enemy : Actor
         // this.updateRotation();
     }
     void selectNewState(){
-         this.setState(this.getRandomState(enemyConfig.validStates));
+         this.setState(this.getRandomState(config.validStates));
             // this.setDirection(this.getRandomDirection(enemyConfig.moveableDirections));
             // stateUpdate = 0;
-            enemyConfig.resetStateUpdateLimit();
+            config.resetStateUpdateLimit();
     }
     void updateState(){
-        if(stateUpdate < enemyConfig.maxStateUpdateLimit){
+        if(stateUpdate < config.maxStateUpdateLimit){
             stateUpdate += Time.deltaTime;
         }
-        if(shootUpdate < enemyConfig.projectileReloadTime){
+        if(shootUpdate < config.projectileReloadTime){
             shootUpdate +=Time.deltaTime;
         }
         int boundaryLimit = (GameConfig.mapsize*5-1);
         if(isBeyondBoundary){
-            this.setDirection(this.getRandomDirection(enemyConfig.moveableDirections));
+            this.setDirection(this.getRandomDirection(config.moveableDirections));
             // MovePlayer();
             movementUpdate = 0;
             // stateUpdate = 0;
         }
-        if(stateUpdate > enemyConfig.stateUpdateLimit){
+        if(stateUpdate > config.stateUpdateLimit){
             // this.setState(this.getRandomState());
-            this.setDirection(this.getRandomDirection(enemyConfig.moveableDirections));
+            this.setDirection(this.getRandomDirection(config.moveableDirections));
             selectNewState();
             stateUpdate = 0;
             // enemyConfig.resetStateUpdateLimit();
@@ -66,7 +66,7 @@ public class Enemy : Actor
             }
             case State.Shoot:
             {
-                if(shootUpdate >= enemyConfig.projectileReloadTime){
+                if(shootUpdate >= config.projectileReloadTime){
 
                 // if(!GameConfig.gridMovement){
                     // MoveActor();
@@ -93,8 +93,8 @@ public class Enemy : Actor
             case State.RandomShoot:
             {
                
-                if(shootUpdate >= enemyConfig.projectileReloadTime){
-                    this.setDirection(this.getRandomDirection(enemyConfig.moveableDirections));
+                if(shootUpdate >= config.projectileReloadTime){
+                    this.setDirection(this.getRandomDirection(config.moveableDirections));
                     shootUpdate = 0;
                 // if(!GameConfig.gridMovement){
                     // MoveActor();
@@ -135,9 +135,19 @@ public class Enemy : Actor
     void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);
+        if (collision.gameObject.layer == 6 /* Floor */)
+        {
+                //If the GameObject's name matches the one you suggest, output this message in the console
+            // Debug.Log("Collided with floor");
+            selectNewState();
+        }
         // if(!isPlayer){
             // this.setDirection(this.getRandomDirection(enemyConfig.moveableDirections));
+        if (collision.gameObject.layer == 8 /* Player */)
+        {
             selectNewState();
+            this.hp--;
+        }
             //Check for a match with the specified name on any GameObject that collides with your GameObject
            
         // }else{

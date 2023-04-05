@@ -164,7 +164,7 @@ MonoBehaviour:
   speed: 1
   isBeyondBoundary: 0
   state: 2
-  projectilePrefab: {fileID: 5455453142302086380, guid: 74e3c9dc595c1c4418b34902e73488e3, type: 3}
+  projectilePrefab: {fileID: 2934013574131364594, guid: 74e3c9dc595c1c4418b34902e73488e3, type: 3}
   stateUpdate: 0
   movementUpdate: 0
   maxHp: 10

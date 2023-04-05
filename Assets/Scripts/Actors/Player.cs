@@ -6,7 +6,6 @@ public class Player : Actor
 {  
     
     [SerializeField] Vector3 inputVector;
-    [SerializeField] ActorConfig config;
     // Start is called before the first frame update
     void Start(){
         config = new ActorConfig();

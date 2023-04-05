@@ -78,13 +78,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   speed: 1
-  stateUpdateLimit: 5
+  isBeyondBoundary: 0
   state: 2
-  projectilePrefab: {fileID: 5455453142302086380, guid: 74e3c9dc595c1c4418b34902e73488e3, type: 3}
+  projectilePrefab: {fileID: 2934013574131364594, guid: 74e3c9dc595c1c4418b34902e73488e3, type: 3}
   stateUpdate: 0
   movementUpdate: 0
-  isBeyondBoundary: 0
+  maxHp: 10
+  hp: 10
+  projectileMultiplier: 1
+  shootUpdate: 0
   inputVector: {x: 0, y: 0, z: 0}
+  config:
+    canShoot: 0
+    moveableDirections: 0000000001000000030000000200000004000000050000000600000007000000
+    validStates: 
+    stateUpdateLimit: 5
+    maxStateUpdateLimit: 5
+    movementUpdateLimit: 0.2
+    projectileReloadTime: 1
 --- !u!1 &3565306364913250884
 GameObject:
   m_ObjectHideFlags: 0

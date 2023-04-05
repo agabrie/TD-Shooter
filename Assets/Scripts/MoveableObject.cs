@@ -23,7 +23,6 @@ public class MoveableObject:MonoBehaviour{
         this.speed = speed;
         this.direction = direction;
     }
-    
     public Vector3 getDirection (){
         // Debug.Log(direction);
         return Directions.get(direction);
