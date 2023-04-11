@@ -8,8 +8,32 @@ public class Enemy : Actor
     void Start(){
         speed = 0.5f;
         state = State.None;
-        List<State> states = new List<State>{State.Move};
+        List<State> states = getStateByLevel(spawner.enemyLevel);
+        // List<State> states = new List<State>{State.Move};
         config = new ActorConfig(states, Directions.getAllDirections());
+    }
+    public List<State> getStateByLevel(int level){
+        Debug.Log(level);
+        switch(level){
+            case 1:{
+                return new List<State>{State.None,State.Move};
+            }
+            case 2:{
+                return new List<State>{State.None,State.Move, State.Search};
+            }
+            case 3:{
+                return new List<State>{State.None,State.Move, State.Search, State.Shoot};
+            }
+            case 4:{
+                return new List<State>{State.None,State.Move, State.Search, State.Shoot, State.RandomShoot};
+            }
+            case 5:{
+                return new List<State>{State.None,State.Move, State.Search, State.Shoot, State.RandomShoot, State.Chase};
+            }
+            default:{
+                return new List<State>{State.None};
+            }
+        }
     }
     public void Update()
     {
@@ -20,6 +44,7 @@ public class Enemy : Actor
     }
 
     public void configureStates(List<State> states){
+        Debug.Log(states);
         config.validStates = states;
     }
     public void selectNewState(){

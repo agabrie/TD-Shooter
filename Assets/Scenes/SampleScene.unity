@@ -361,12 +361,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 7398481146266501773, guid: bbff6d3dc5f1e204f86307ee64ea78af, type: 3}
-  - {fileID: 7398481146266501773, guid: 973d33bcb7ebcf342bec7fa70ece8a5c, type: 3}
-  - {fileID: 7398481146266501773, guid: 97fb01e2c2dc474418383af94c217559, type: 3}
-  - {fileID: 7398481146266501773, guid: f715aa52ab67dd448b0e41dd662d3625, type: 3}
-  - {fileID: 7398481146266501773, guid: 39a1db4792e21214e986cb3c429074cd, type: 3}
-  cubes: []
+  - {fileID: 4842651263186160433, guid: bbff6d3dc5f1e204f86307ee64ea78af, type: 3}
+  - {fileID: 6769660284079921229, guid: 973d33bcb7ebcf342bec7fa70ece8a5c, type: 3}
+  - {fileID: 4265711731848325009, guid: f715aa52ab67dd448b0e41dd662d3625, type: 3}
+  - {fileID: -4883360944935172049, guid: 97fb01e2c2dc474418383af94c217559, type: 3}
+  - {fileID: 4834477269394927450, guid: 39a1db4792e21214e986cb3c429074cd, type: 3}
+  enemies: []
   numEnemies: 0
 --- !u!4 &795434219
 Transform:
