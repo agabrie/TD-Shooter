@@ -6,11 +6,11 @@ public class Enemy : Actor
 {  
     // Start is called before the first frame update
     void Start(){
+        speed = 0.5f;
         state = State.None;
-        List<State> states = new List<State>{State.RandomShoot, State.Shoot, State.Chase};
-        config = new ActorConfig(states, Directions.getDiagonalDirections());
+        List<State> states = new List<State>{State.Move};
+        config = new ActorConfig(states, Directions.getAllDirections());
     }
-    
     public void Update()
     {
         updateState();
@@ -18,13 +18,18 @@ public class Enemy : Actor
         // checkBeyondBoundary();
         // this.updateRotation();
     }
-    void selectNewState(){
-         this.setState(this.getRandomState(config.validStates));
+
+    public void configureStates(List<State> states){
+        config.validStates = states;
+    }
+    public void selectNewState(){
+        animator.SetBool("isSearching", false);
+        this.setState(this.getRandomState(config.validStates));
             // this.setDirection(this.getRandomDirection(enemyConfig.moveableDirections));
             // stateUpdate = 0;
-            config.resetStateUpdateLimit();
+        config.resetStateUpdateLimit();
     }
-    void updateState(){
+    public void updateState(){
         if(stateUpdate < config.maxStateUpdateLimit){
             stateUpdate += Time.deltaTime;
         }
@@ -116,13 +121,20 @@ public class Enemy : Actor
             case State.Chase:{
                 Player p = (Player)FindObjectOfType<Player>();
                 float distance = Vector3.Distance(p.transform.position,this.transform.position);
-                Debug.Log("distance to player"+distance);
+                // Debug.Log("distance to player"+distance);
                 if( distance<= 3f){
                     selectNewState();
                     stateUpdate = 0;
                 }else{
                     this.moveObject(p.transform.position);
                 }
+                // enemyConfig.setStateUpdateLimit(2f);
+                break;
+            }
+            case State.Search:{
+                // if(Input.GetKey(KeyCode.S)){
+                    animator.SetBool("isSearching", true);
+                // }
                 // enemyConfig.setStateUpdateLimit(2f);
                 break;
             }

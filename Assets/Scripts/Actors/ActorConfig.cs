@@ -7,13 +7,14 @@ public class ActorConfig{
     public bool canShoot=false;
     public List<Direction> moveableDirections = new List<Direction>();
     public List<State> validStates = new List<State>();
-
+    
     [SerializeField] public float stateUpdateLimit = 5;
 
     public float maxStateUpdateLimit = 5;
     public float movementUpdateLimit = 0.2f;
     public float projectileReloadTime = 1f;
-
+    public float shootAnimationTime = 0.4f;
+    public float animationTime = 0f;
 
     public ActorConfig(){
         moveableDirections.AddRange(Directions.getAllDirections());

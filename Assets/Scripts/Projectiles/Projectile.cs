@@ -1,7 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+[Serializable]
+public class QueuedProjectile{
+    public float speed;
+    public Direction direction;
+    public GameObject seeking;
+    public Vector3 location;
+    public ProjectileType type;
 
+    public QueuedProjectile(Direction direction,float speed){
+        this.direction = direction;
+        this.speed = speed;
+        this.type = ProjectileType.Standard;
+    }
+    public QueuedProjectile(Direction direction,float speed, GameObject seeking){
+        this.direction = direction;
+        this.speed = speed;
+        this.seeking = seeking;
+        this.type = ProjectileType.Seeking;
+    }
+    public QueuedProjectile(Direction direction,float speed, Vector3 location){
+        this.direction = direction;
+        this.speed = speed;
+        this.location = location;
+        this.type = ProjectileType.Bomber;
+    }
+    public Vector3 getDirection(){
+        // Debug.Log(this.direction);
+        return Directions.get(this.direction);
+    }
+}
 public class Projectile : MoveableObject
 {
     [SerializeField] public float force = 2f;
@@ -16,6 +44,16 @@ public class Projectile : MoveableObject
     
     public void setParent(Actor parent){
         this.parent = parent;
+    }
+    public void updateMaterial(Material []m){
+        foreach(Transform t in transform){
+            if(t.name == "Bullet"){
+                foreach (Transform mesh in t)
+                {
+                    mesh.GetComponent<Renderer>().sharedMaterial = m[0];
+                }
+            }
+        }
     }
     public void setForce(float multiplier){
         // this.force = force;

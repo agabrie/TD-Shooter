@@ -24,8 +24,13 @@ public class MoveableObject:MonoBehaviour{
         this.direction = direction;
     }
     public Vector3 getDirection (){
-        // Debug.Log(direction);
-        return Directions.get(direction);
+        // try{
+
+            // Debug.Log(direction);
+            return Directions.get(direction);
+        // }catch(Exception e){
+            // return Vector3.zero;
+        // }
     }
     public void setDirection(Direction direction){
         this.direction = direction;
@@ -38,7 +43,10 @@ public class MoveableObject:MonoBehaviour{
     public void updateRotation(){
         float step = 20f * speed * Time.deltaTime;
         // transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), step);
-        gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation,Quaternion.LookRotation(this.getDirection()), step);
+        Vector3 dir = this.getDirection();
+        if(dir != Vector3.zero){
+            gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation,Quaternion.LookRotation(dir), step);
+        }
     }
     public void updateRotation(float rotSpeed){
         float step = rotSpeed * Time.deltaTime;

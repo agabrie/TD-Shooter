@@ -7,7 +7,8 @@ public class Player : Actor
     
     [SerializeField] Vector3 inputVector;
     // Start is called before the first frame update
-    void Start(){
+    public void Start(){
+        base.Start();
         config = new ActorConfig();
     }
 
@@ -20,8 +21,9 @@ public class Player : Actor
         horizontalInput = Convert.ToInt32(GameConfig.movementType(KeyCode.RightArrow))-Convert.ToInt32(GameConfig.movementType(KeyCode.LeftArrow));
 
         inputVector = new Vector3(horizontalInput,0, verticalInput);
-        float step = 10 * Time.deltaTime;
+        // float step = 10 * Time.deltaTime;
         if(inputVector != Vector3.zero){
+
             this.setDirection(Directions.getDirectionFromVector(inputVector));
             MoveActor();
         }
@@ -31,6 +33,12 @@ public class Player : Actor
         if(shootUpdate < config.projectileReloadTime){
             shootUpdate +=Time.deltaTime;
         }
+        if(Input.GetKey(KeyCode.S)){
+            animator.SetBool("isSearching", true);
+        }else{
+            animator.SetBool("isSearching", false);
+        }
+
         if(Input.GetKeyDown(KeyCode.P)){
             moveObject(new Vector3(0,0.5f,0));
         }

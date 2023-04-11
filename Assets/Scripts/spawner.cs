@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class spawner : MonoBehaviour
 {
-    [SerializeField] GameObject prefab;
-    [SerializeField] List<GameObject> cubes = new List<GameObject>();
+    [SerializeField] List<Enemy> prefabs;
+    [SerializeField] List<Enemy> enemies = new List<Enemy>();
     [SerializeField] int numEnemies = 0;
     // public bool spaceKeyPressed = false;
     // public bool keyPressed = false;
@@ -19,7 +19,9 @@ public class spawner : MonoBehaviour
         int boundary = (GameConfig.mapsize*5)-2;
         int randX = (int)UnityEngine.Random.Range(-(boundary), boundary);
         int randZ = (int)UnityEngine.Random.Range(-(boundary), boundary);
-        cubes.Add(Instantiate(prefab, new Vector3(randX, transform.position.y, randZ), Quaternion.identity, this.transform));
+        Enemy e = Instantiate(prefabs[(int)UnityEngine.Random.Range(0, prefabs.Count)], new Vector3(randX, transform.position.y, randZ), Quaternion.identity, this.transform);
+        e.configureStates(new List<State>{State.Move, State.Search, State.Shoot});
+        enemies.Add(e);
     }
     void Spawn(int numEnemies){
         for (int i = 0; i < numEnemies; i++)

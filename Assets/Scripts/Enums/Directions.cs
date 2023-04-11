@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 public enum Direction{
-    Up,
-    Down,
-    Right,
-    Left,
-    
-    UpRight,
-    UpLeft,
-    DownRight,
-    DownLeft,
-    Zero
+    Up=1,/*1*/
+    Down=2,/*2*/
+    Right=4,/*4*/
+    Left=8,/*8*/
+    /* Figure out how to add directions */
+    UpRight = 5,/*5*/
+    UpLeft=9,/*9*/
+    DownRight=6,/*6*/
+    DownLeft=10,/*10*/
+    Zero=0/*0*/
 }
 
 
@@ -44,7 +44,10 @@ public class Directions{
     public static Direction getRandomDirection(Direction direction){
         Direction dir = direction;
         while(dir == direction){
-            dir = (Direction) UnityEngine.Random.Range(0,directions.Length);
+            Array values = Enum.GetValues(typeof(Direction));
+            System.Random random = new System.Random();
+            dir = (Direction)values.GetValue(random.Next(values.Length));
+            // dir = (Direction) UnityEngine.Random.Range(0,directions.Length);
         }
         return dir;
     }
@@ -57,15 +60,37 @@ public class Directions{
     }
 
     public static Vector3 get(Direction dir){
-        return directions[(int)dir];
+        return directions[getVectorIndex(dir)];
     }
     public static Direction getDirectionFromVector(Vector3 vector){
-        // Debug.Log(vector==Directions.Left);
-        // Debug.Log("Index Of Direction" + Array.IndexOf(directions, vector));
-        // Debug.Log("Get Direction" +vector);
-        // vector.Normalize();
-       Direction d=(Direction)Array.FindIndex(directions, direction=>isSameDirection(direction, vector));
+       Direction d=getEnumIndex(Array.FindIndex(directions, direction=>isSameDirection(direction, vector)));
        return d;
+    }
+    public static int getVectorIndex(Direction dir){
+        switch (dir){
+            case Direction.Up:return 0;
+            case Direction.Down:return 1;
+            case Direction.Right:return 2;
+            case Direction.Left:return 3;
+            case Direction.UpRight:return 4;
+            case Direction.UpLeft:return 5;
+            case Direction.DownRight:return 6;
+            case Direction.DownLeft:return 7;
+            default: return 8;
+        }
+    }
+    public static Direction getEnumIndex(int index){
+        switch (index){
+            case 0:return Direction.Up;
+            case 1:return Direction.Down;
+            case 2:return Direction.Right;
+            case 3:return Direction.Left;
+            case 4:return Direction.UpRight;
+            case 5:return Direction.UpLeft;
+            case 6:return Direction.DownRight;
+            case 7:return Direction.DownLeft;
+            default: return Direction.Zero;
+        }
     }
     public static bool isSameDirection(Vector3 v1,Vector3 v2 ){
         v1.Normalize();

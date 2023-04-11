@@ -1,14 +1,18 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Actor : MoveableObject
 {
     // [SerializeField] public float stateUpdateLimit = 5;
+    [SerializeField] public Animator animator;
+    [SerializeField] Material [] materials;
+    // [SerializeField] Material accentMaterial;
     [SerializeField] public ActorConfig config;
     [SerializeField] public State state = State.None;
     [SerializeField] internal Projectile projectilePrefab;
     List<Projectile> projectiles =  new List<Projectile>(); 
+    [SerializeField] List<QueuedProjectile> projectileQueue =  new List<QueuedProjectile>(); 
     // public const float maxStateUpdateLimit = 5;
     // public const float movementUpdateLimit = 0.2f;
     public float stateUpdate = 0;
@@ -18,8 +22,31 @@ public class Actor : MoveableObject
     public float projectileMultiplier = 1f;
     public float shootUpdate = 0;
     // Start is called before the first frame update
-    void Start(){
+    public void Start(){
+        // animator = GetComponentInChildren<Animator>();
         hp = maxHp;
+        // Debug.Log(transform);
+        foreach (Transform t in transform)
+        {
+            if(t.name=="Poof"){
+                // string [] accentNames = {"Arm", "Eye", "Foot", "Nozzle"};
+                updateChildMaterials(t, materials[1], new string[]{"Arm", "Eye", "Foot", "Nozzle"});
+                updateChildMaterials(t, materials[0], new string[]{"Body"});
+            }
+            // foreach (Transform mesh in t)
+            // {
+
+                // Debug.Log(mesh.name);
+                // if(mesh.name == "Arm" || mesh.name == "Arm" || mesh.name == "Eye"|| mesh.name == "Foot" || mesh.name == "Nozzle"){
+                //     Debug.Log(mesh.name);        
+                //     if(mesh.name =="Body"){
+                //         mesh.GetComponent<Renderer>().sharedMaterial = materials[0];
+                //     }else{
+                //         mesh.GetComponent<Renderer>().sharedMaterial = materials[1];
+                //     }
+                // }    
+            // }
+        }
     }
     public void MoveActor(){
         if(!isBeyondBoundary){
@@ -38,17 +65,81 @@ public class Actor : MoveableObject
         return States.getRandomState(selectableStates);
     }
     public void fireProjectile(Direction direction,float speed){
-        Vector3 dir = this.getDirection();
+        animator.SetTrigger("Shoot");
+        // Vector3 dir = this.getDirection();
         // Projectile projectile =(Projectile)Instantiate(projectilePrefab, this.transform.position+dir, Quaternion.identity) ;
-        Projectile projectile =(Projectile)Instantiate(projectilePrefab, this.transform.position+dir, this.transform.rotation) ;
-        projectiles.Add(projectile);
-        projectile.name = "P1";
-        projectile.setParent(this);
-        projectile.setDirection(this.direction);
-        projectile.setForce(speed);
+        // Projectile projectile =(Projectile)Instantiate(projectilePrefab, this.transform.position+dir, this.transform.rotation) ;
+        // projectiles.Add(projectile);
+        // projectile.name = "P1";
+        // projectile.setParent(this);
+        queueProjectile(direction, speed);
+        // projectile.setDirection(this.direction);
+        // projectile.setForce(speed);
+    }
+    public void queueProjectile(Direction dir,float speed){
+        // Projectile projectile =(Projectile)Instantiate(projectilePrefab, this.transform.position+dir, Quaternion.identity) ;
+        // Projectile projectile =(Projectile)Instantiate(projectilePrefab, this.transform.position+dir, this.transform.rotation) ;
+        projectileQueue.Add(new QueuedProjectile(dir, speed));
+        // projectile.name = "P1";
+        // projectile.setParent(this);
+        // projectile.setDirection(this.direction);
+        // projectile.setForce(speed);
+    }
+    public void launchProjectileQueue(){
+        // if(projectileQueue.Count<1){
+            // return ;
+        // }
+       for (int i = projectileQueue.Count - 1; i >= 0; i--)
+        {
+            QueuedProjectile queued;
+            if(projectileQueue[i]!=null){
+                queued = projectileQueue[i];
+            }else{
+                continue;
+            }
+            // if(i>= projectileQueue.Count || i<= 0){
+                // i--;
+                // break;
+            // }
+            switch(projectileQueue[i].type){
+                case ProjectileType.Standard:{
+                    // Debug.Log(string.Format("i=> {0} counter => {1} q => {2}",i, projectileQueue.Count, queued.getDirection()));
+                    Projectile projectile =(Projectile)Instantiate(projectilePrefab, this.transform.position+queued.getDirection(), this.transform.rotation) ;
+
+                    // projectile..sharedMaterial = this.materials[0];
+                    // updateChildMaterials(projectile.transform, materials[0]);
+                    projectile.updateMaterial(materials);
+                    projectile.name = "P1";
+                    projectile.setParent(this);
+                    projectile.setDirection(queued.direction);
+                    projectile.setForce(queued.speed);
+                    break;
+                }
+            }
+                    projectileQueue.RemoveAt(i);
+        }
+    }
+    public void updateChildMaterials(Transform transforms, Material m,string []validNames){
+            // Debug.Log(transforms.name);
+        
+        foreach (Transform t in transforms)
+        {
+            // Debug.Log(t.name);
+            if(validNames.Contains(t.name)){
+                t.GetComponent<Renderer>().sharedMaterial = m;
+            }
+        }
     }
     public void Update()
     {
+        if(config.animationTime <= 1f){
+            config.animationTime += Time.deltaTime;
+        }
+
+        if(config.animationTime >= config.shootAnimationTime){
+            launchProjectileQueue();
+            config.animationTime = 0;
+        }
         if(hp <= 0){
             Destroy(this.gameObject);
         }

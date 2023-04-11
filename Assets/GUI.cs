@@ -10,7 +10,7 @@ public class GUI : MonoBehaviour
     void Start()
     {
         tm = GetComponent<Text>();
-        Debug.Log(tm.text);
+        // Debug.Log(tm.text);
             tm.text = "Hi";
     }
 
