@@ -50,7 +50,14 @@ public class Actor : MoveableObject
     }
     public void MoveActor(){
         if(!isBeyondBoundary){
+            // if(!animator.GetBool("isWalking")){
+            //     animator.SetBool("isWalking", true);
+            // }
             this.moveObject();
+        }else{
+            if(animator.GetBool("isWalking")){
+                animator.SetBool("isWalking", false);
+            }
         }
     }
 
@@ -132,6 +139,15 @@ public class Actor : MoveableObject
     }
     public void Update()
     {
+        if(state == State.Move){
+            if(!animator.GetBool("isWalking")){
+                animator.SetBool("isWalking", true);
+            }
+        }else{
+            if(animator.GetBool("isWalking")){
+                animator.SetBool("isWalking", false);
+            }
+        }
         if(config.animationTime <= 1f){
             config.animationTime += Time.deltaTime;
         }

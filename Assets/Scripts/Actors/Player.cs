@@ -17,15 +17,24 @@ public class Player : Actor
         
         float horizontalInput = 0f;
         float verticalInput = 0f;
-        verticalInput = Convert.ToInt32(GameConfig.movementType(KeyCode.UpArrow))-Convert.ToInt32(GameConfig.movementType(KeyCode.DownArrow));
-        horizontalInput = Convert.ToInt32(GameConfig.movementType(KeyCode.RightArrow))-Convert.ToInt32(GameConfig.movementType(KeyCode.LeftArrow));
+        verticalInput = Convert.ToInt32(Input.GetAxis("Vertical"));
+        horizontalInput = Convert.ToInt32(Input.GetAxis("Horizontal"));
+        // verticalInput = Convert.ToInt32(GameConfig.movementType(KeyCode.UpArrow))-Convert.ToInt32(GameConfig.movementType(KeyCode.DownArrow));
+        // horizontalInput = Convert.ToInt32(GameConfig.movementType(KeyCode.RightArrow))-Convert.ToInt32(GameConfig.movementType(KeyCode.LeftArrow));
 
         inputVector = new Vector3(horizontalInput,0, verticalInput);
         // float step = 10 * Time.deltaTime;
         if(inputVector != Vector3.zero){
-
             this.setDirection(Directions.getDirectionFromVector(inputVector));
+            if(state != State.Move){
+                setState(State.Move);
+            }
             MoveActor();
+        }else{
+            if(state != State.None){
+                setState(State.None);
+            }
+            // animator.SetBool("isWalking", false);
         }
     }
     public void Update()
@@ -42,17 +51,15 @@ public class Player : Actor
         if(Input.GetKeyDown(KeyCode.P)){
             moveObject(new Vector3(0,0.5f,0));
         }
-            if(shootUpdate>=config.projectileReloadTime && Input.GetKeyDown(KeyCode.Space)){
+            if(shootUpdate>=config.projectileReloadTime && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))){
                 fireProjectile(this.direction, this.projectileMultiplier);
                 shootUpdate = 0;
             }
             cardinalDirectionsController();
             base.Update();
-
-        // checkBeyondBoundary();
-        // this.updateRotation();
-        // if(isPlayer){
-        // }
+        /*
+            Button0 => Square
+        */
     }
    
 
