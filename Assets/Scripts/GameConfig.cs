@@ -30,6 +30,9 @@ public class GameConfig : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.L)){
             enemyLevel++;
+            // if(enemyLevel > 5){
+                enemyLevel %= 6;
+            // }
             Debug.Log(enemyLevel);
         }
         // toggleGridMovement();

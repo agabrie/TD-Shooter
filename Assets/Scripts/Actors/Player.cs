@@ -42,11 +42,11 @@ public class Player : Actor
         if(shootUpdate < config.projectileReloadTime){
             shootUpdate +=Time.deltaTime;
         }
-        if(Input.GetKey(KeyCode.S)){
-            animator.SetBool("isSearching", true);
-        }else{
-            animator.SetBool("isSearching", false);
-        }
+        // if(Input.GetKey(KeyCode.S)){
+        //     animator.SetBool("isSearching", true);
+        // }else{
+        //     animator.SetBool("isSearching", false);
+        // }
 
         if(Input.GetKeyDown(KeyCode.P)){
             moveObject(new Vector3(0,0.5f,0));
