@@ -7,7 +7,6 @@ public class spawner : MonoBehaviour
     [SerializeField] List<Enemy> prefabs;
     [SerializeField] List<Enemy> enemies = new List<Enemy>();
     [SerializeField] int numEnemies = 0;
-    [SerializeField] public static int enemyLevel = 1;
     // public bool spaceKeyPressed = false;
     // public bool keyPressed = false;
     // Start is called before the first frame update
@@ -59,10 +58,7 @@ public class spawner : MonoBehaviour
         }
     }
     void KeyController(){
-        if(Input.GetKeyDown(KeyCode.L)){
-            enemyLevel++;
-            Debug.Log(enemyLevel);
-        }
+        
         if(Input.GetKeyDown(KeyCode.K) /*&& !spaceKeyPressed*/){
             // spaceKeyPressed = true;
             // cubes.Add(

@@ -8,7 +8,7 @@ public class Enemy : Actor
     void Start(){
         speed = 0.5f;
         state = State.None;
-        List<State> states = getStateByLevel(spawner.enemyLevel);
+        List<State> states = getStateByLevel(GameConfig.enemyLevel);
         // List<State> states = new List<State>{State.Move};
         config = new ActorConfig(states, Directions.getAllDirections());
     }

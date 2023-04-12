@@ -6,7 +6,9 @@ public class ConfigFields:MonoBehaviour{
 public class GameConfig : MonoBehaviour
 {
     [SerializeField] public static bool gridMovement = false;
-    [SerializeField] public static int mapsize = 3;
+    [SerializeField] public static int mapsize = 4;
+    [SerializeField] public static int enemyLevel = 1;
+
     public static Func<KeyCode, bool> movementType = Input.GetKey;
 
     public static void checkMovementType(){
@@ -26,6 +28,10 @@ public class GameConfig : MonoBehaviour
     }
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.L)){
+            enemyLevel++;
+            Debug.Log(enemyLevel);
+        }
         // toggleGridMovement();
     }
 }

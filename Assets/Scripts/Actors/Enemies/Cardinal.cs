@@ -5,7 +5,7 @@ public class Cardinal:Enemy{
     void Start(){
         speed = 0.5f;
         state = State.None;
-        List<State> states = getStateByLevel(spawner.enemyLevel);
+        List<State> states = getStateByLevel(GameConfig.enemyLevel);
 
         config = new ActorConfig(states, Directions.getCardinalDirections());
     }
